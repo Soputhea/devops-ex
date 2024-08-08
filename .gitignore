@@ -1,4 +1,7 @@
 node_modules/
+puthea-key
+puthea-key.pub
+ec2-key-2.pem
 # Local .terraform directories
 **/.terraform/*
 

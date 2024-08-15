@@ -39,33 +39,38 @@ resource "aws_key_pair" "puthea_key" {
 
 resource "aws_instance" "server_1" {
   ami                         = "ami-ff0fea8310f3"
-  instance_type               = "t3.nano"
-  count                       = 2
+  instance_type               = "t3.micro"
+  count                       = 3
   key_name                    = aws_key_pair.puthea_key.key_name
   security_groups             = [aws_security_group.sg_1.name]
+  # user_data                   = <<-EOF
+  #             #!/bin/bash
+  #             apt update -y
+  #             apt install git -y
+  #             apt install curl -y
+
+  #             # Install NVM
+  #             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+  #             . ~/.nvm/nvm.sh
+
+  #             # Install Node.js 18
+  #             nvm install 18
+
+  #             # Install PM2
+  #             npm install pm2 -g
+
+  #             # Clone Node.js repository
+  #             git clone https://github.com/Soputhea/DevOps.git /root/devops-ex
+
+  #             # Navigate to the repository and start the app with PM2
+  #             cd /root/devops-ex
+  #             npm install
+  #             pm2 start app.js --name node-app -- -p 8000
+  #           EOF
+  user_data_replace_on_change = true
   user_data                   = <<-EOF
               #!/bin/bash
               apt update -y
-              apt install git -y
-              apt install curl -y
-
-              # Install NVM
-              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-              . ~/.nvm/nvm.sh
-
-              # Install Node.js 18
-              nvm install 18
-
-              # Install PM2
-              npm install pm2 -g
-
-              # Clone Node.js repository
-              git clone https://github.com/Soputhea/DevOps.git /root/devops-ex
-
-              # Navigate to the repository and start the app with PM2
-              cd /root/devops-ex
-              npm install
-              pm2 start app.js --name node-app -- -p 8000
-            EOF
-  user_data_replace_on_change = true
+              apt install python3 -y
+              EOF
 }
